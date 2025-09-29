@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>StarCase</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 60px 0 70px;
+        }
+        
+        /* Шапка */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            padding: 15px;
+            z-index: 1000;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .close-button {
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .balance {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .connect-wallet {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        /* Таймер бесплатного кейса */
+        .free-timer {
+            background: linear-gradient(90deg, #ff6b6b, #ee5a52);
+            padding: 15px;
+            text-align: center;
+            margin: 10px 15px;
+            border-radius: 10px;
+        }
+        
+        .timer-text {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        
+        .timer {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        /* Сетка кейсов - ТОЧНО КАК НА СКРИНШОТЕ */
+        .cases-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 0 15px;
+            margin-top: 20px;
+        }
+        
+        .case-item {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #333;
+        }
+        
+        .case-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .case-number {
+            font-size: 16px;
+            color: #888;
+            font-weight: bold;
+        }
+        
+        .case-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .case-price {
+            background: #0088cc;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        /* Навигация */
+        .navigation {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid #333;
+        }
+        
+        .nav-item {
+            text-align: center;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 10px;
+            transition: background 0.3s;
+            flex: 1;
+            margin: 0 5px;
+        }
+        
+        .nav-item.active {
+            background: #0088cc;
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+        
+        .nav-text {
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <div class="header">
+        <div class="close-button">✕</div>
+        <div class="balance">⭐ <span id="starBalance">150</span></div>
+        <button class="connect-wallet">
+            Подключить кошелек
+        </button>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="container">
+        <!-- Таймер бесплатного кейса -->
+        <div class="free-timer">
+            <div class="timer-text">Free box</div>
+            <div class="timer" id="freeTimer">23:59:47</div>
+        </div>
+
+        <!-- Кейсы - ТОЧНО КАК НА СКРИНШОТЕ -->
+        <div class="cases-grid">
+            <!-- Кейс #2 -->
+            <div class="case-item" onclick="openCase('snoop')">
+                <div class="case-info">
+                    <div class="case-number">#2</div>
+                    <div class="case-name">SNOOP DOG CASE</div>
+                </div>
+                <div class="case-price">180</div>
+            </div>
+
+            <!-- Кейс #7 -->
+            <div class="case-item" onclick="openCase('floor')">
+                <div class="case-info">
+                    <div class="case-number">#7</div>
+                    <div class="case-name">FLOOR CASE</div>
+                </div>
+                <div class="case-price">180</div>
+            </div>
+
+            <!-- Кейс #8 -->
+            <div class="case-item" onclick="openCase('cartier')">
+                <div class="case-info">
+                    <div class="case-number">#8</div>
+                    <div class="case-name">CARTIER CASE</div>
+                </div>
+                <div class="case-price">900</div>
+            </div>
+
+            <!-- Добавим еще кейсов как на скриншоте -->
+            <div class="case-item" onclick="openCase('diamond')">
+                <div class="case-info">
+                    <div class="case-number">#9</div>
+                    <div class="case-name">DIAMOND CASE</div>
+                </div>
+                <div class="case-price">1500</div>
+            </div>
+
+            <div class="case-item" onclick="openCase('gold')">
+                <div class="case-info">
+                    <div class="case-number">#10</div>
+                    <div class="case-name">GOLD CASE</div>
+                </div>
+                <div class="case-price">2500</div>
+            </div>
+
+            <div class="case-item" onclick="openCase('bear')">
+                <div class="case-info">
+                    <div class="case-number">#1</div>
+                    <div class="case-name">BEAR CASE</div>
+                </div>
+                <div class="case-price">15</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Навигация -->
+    <div class="navigation">
+        <div class="nav-item">
+            <div class="nav-icon">🎒</div>
+            <div class="nav-text">Инвентарь</div>
+        </div>
+        <div class="nav-item active">
+            <div class="nav-icon">🎁</div>
+            <div class="nav-text">Кейсы</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">📊</div>
+            <div class="nav-text">Рейтинг</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">👤</div>
+            <div class="nav-text">Профиль</div>
+        </div>
+    </div>
+
+    <script>
+        // Таймер бесплатного кейса
+        function startFreeTimer() {
+            const timerElement = document.getElementById('freeTimer');
+            let time = 23 * 3600 + 59 * 60 + 47; // 23:59:47 в секундах
+            
+            setInterval(() => {
+                time--;
+                if (time < 0) time = 24 * 3600;
+                
+                const hours = Math.floor(time / 3600);
+                const minutes = Math.floor((time % 3600) / 60);
+                const seconds = time % 60;
+                
+                timerElement.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Открытие кейса
+        function openCase(type) {
+            const casePrices = {
+                'bear': 15,
+                'snoop': 180,
+                'floor': 180,
+                'cartier': 900,
+                'diamond': 1500,
+                'gold': 2500
+            };
+
+            const price = casePrices[type];
+            const starBalance = parseInt(document.getElementById('starBalance').textContent);
+            
+            if (starBalance >= price) {
+                // Показываем анимацию открытия
+                alert(`🎉 Открываем кейс за ${price} ⭐!`);
+                // Здесь будет логика открытия кейса
+            } else {
+                alert('❌ Недостаточно звезд!');
+            }
+        }
+
+        // Запуск таймера при загрузке
+        document.addEventListener('DOMContentLoaded', startFreeTimer);
+    </script>
+</body>
+</html>
